@@ -3,12 +3,14 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <img class="title" src="http://www-wms-java.itheima.net/img/title.ef005a7a.png" alt="">
+        <!-- <h3 class="title">Login Form</h3> -->
       </div>
 
       <el-form-item prop="username">
         <span class="svg-container">
-          <svg-icon icon-class="user" />
+          <!-- <svg-icon class="el-icon-mobile" /> -->
+          <i style="font-size: 18px;" class="el-icon-mobile" />
         </span>
         <el-input
           ref="username"
@@ -41,7 +43,7 @@
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;background-color: #ffb200;" @click.native.prevent="handleLogin">登录</el-button>
 
       <div class="tips">
         <span style="margin-right:20px;">username: admin</span>
@@ -49,6 +51,7 @@
       </div>
 
     </el-form>
+    <el-image class="bgimg" src="http://www-wms-java.itheima.net/img/contentBg.1321d126.png" />
   </div>
 </template>
 
@@ -141,6 +144,7 @@ $cursor: #fff;
 
 /* reset element-ui css */
 .login-container {
+
   .el-input {
     display: inline-block;
     height: 47px;
@@ -152,9 +156,9 @@ $cursor: #fff;
       -webkit-appearance: none;
       border-radius: 0px;
       padding: 12px 5px 12px 15px;
-      color: $light_gray;
+      color: black;
       height: 47px;
-      caret-color: $cursor;
+      caret-color: black;
 
       &:-webkit-autofill {
         box-shadow: 0 0 0px 1000px $bg inset !important;
@@ -165,7 +169,7 @@ $cursor: #fff;
 
   .el-form-item {
     border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
+    background: #f8f5f5;
     border-radius: 5px;
     color: #454545;
   }
@@ -173,15 +177,22 @@ $cursor: #fff;
 </style>
 
 <style lang="scss" scoped>
-$bg:#2d3a4b;
+$bg:#fff;
 $dark_gray:#889aa4;
 $light_gray:#eee;
 
 .login-container {
-  min-height: 100%;
-  width: 100%;
+  margin: 100px auto;
+  // min-height: 100%;
+  // width: 100%;
+  display:flex;
+  width: 960px;
+  height: 520px;
   background-color: $bg;
   overflow: hidden;
+  border-radius:34px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px #ccc;
 
   .login-form {
     position: relative;
@@ -190,6 +201,10 @@ $light_gray:#eee;
     padding: 160px 35px 0;
     margin: 0 auto;
     overflow: hidden;
+    flex: 2;
+  }
+  .bgimg{
+    flex: 3;
   }
 
   .tips {
@@ -208,19 +223,23 @@ $light_gray:#eee;
     padding: 6px 5px 6px 15px;
     color: $dark_gray;
     vertical-align: middle;
-    width: 30px;
+    width: 47px;
     display: inline-block;
+    background-color: #eae7e7;
   }
 
   .title-container {
     position: relative;
 
     .title {
-      font-size: 26px;
-      color: $light_gray;
-      margin: 0px auto 40px auto;
-      text-align: center;
-      font-weight: bold;
+      width: 150px;
+      height: 64px;
+      // font-size: 26px;
+      // color: $light_gray;
+      // margin: 0px auto 40px 120px;
+      transform: translate(100px,-40px);
+      // text-align: center;
+      // font-weight: bold;
     }
   }
 
@@ -233,5 +252,6 @@ $light_gray:#eee;
     cursor: pointer;
     user-select: none;
   }
+
 }
 </style>
