@@ -15,7 +15,7 @@
         <el-input
           ref="username"
           v-model="loginForm.username"
-          placeholder="Username"
+          placeholder="输入用户名"
           name="username"
           type="text"
           tabindex="1"
@@ -32,7 +32,7 @@
           ref="password"
           v-model="loginForm.password"
           :type="passwordType"
-          placeholder="Password"
+          placeholder="输入密码"
           name="password"
           tabindex="2"
           auto-complete="on"
@@ -42,13 +42,8 @@
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
-
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;background-color: #ffb200;" @click.native.prevent="handleLogin">登录</el-button>
-
-      <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: any</span>
-      </div>
+      <el-checkbox v-model="checked" style="margin-bottom: 20px; color:#ffb200">记住密码</el-checkbox>
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;background-color: #ffb200;" @click.prevent="handleLogin">登录</el-button>
 
     </el-form>
     <el-image class="bgimg" src="http://www-wms-java.itheima.net/img/contentBg.1321d126.png" />
@@ -76,6 +71,7 @@ export default {
       }
     }
     return {
+      checked: false,
       loginForm: {
         username: 'admin',
         password: '111111'
@@ -109,20 +105,22 @@ export default {
       })
     },
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
-            this.loading = false
-          }).catch(() => {
-            this.loading = false
-          })
-        } else {
-          console.log('error submit!!')
-          return false
-        }
-      })
+      this.$router.push('/')
+
+      // this.$refs.loginForm.validate(valid => {
+      //   if (valid) {
+      //     this.loading = true
+      //     this.$store.dispatch('user/login', this.loginForm).then(() => {
+      //       this.$router.push({ path: this.redirect || '/' })
+      //       this.loading = false
+      //     }).catch(() => {
+      //       this.loading = false
+      //     })
+      //   } else {
+      //     console.log('error submit!!')
+      //     return false
+      //   }
+      // })
     }
   }
 }
@@ -252,6 +250,9 @@ $light_gray:#eee;
     cursor: pointer;
     user-select: none;
   }
+.el-checkbox__input.is-checked .el-checkbox__inner{
+  background-color: #fff;
+}
 
 }
 </style>

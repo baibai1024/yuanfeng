@@ -3,11 +3,11 @@
     <transition name="sidebarLogoFade">
       <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
         <img v-if="logo" :src="logo" class="sidebar-logo">
-        <h1 v-else class="sidebar-title">{{ title }} </h1>
+
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
         <img v-if="logo" :src="logo" class="sidebar-logo">
-        <h1 class="sidebar-title">{{ title }} </h1>
+
       </router-link>
     </transition>
   </div>
@@ -24,8 +24,7 @@ export default {
   },
   data() {
     return {
-      title: 'Vue Admin Template',
-      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+      logo: '	http://www-wms-java.itheima.net/img/logo@2x.2c4f2c76.png'
     }
   }
 }
@@ -44,19 +43,21 @@ export default {
 .sidebar-logo-container {
   position: relative;
   width: 100%;
-  height: 50px;
-  line-height: 50px;
-  background: #2b2f3a;
+  height: 100px;
+  line-height: 100px;
+  background: #fff;
   text-align: center;
   overflow: hidden;
 
   & .sidebar-logo-link {
-    height: 100%;
+    // height: 200px;
     width: 100%;
+    background-color: #fff;
+    // margin-bottom: 200px;
 
     & .sidebar-logo {
-      width: 32px;
-      height: 32px;
+      width: 80%;
+      height: 80%;
       vertical-align: middle;
       margin-right: 12px;
     }
@@ -78,5 +79,20 @@ export default {
       margin-right: 0px;
     }
   }
+  // .scrollbar-wrapper{
+  //   margin-top: 200px;
+  // }
+  // .el-scrollbar{
+  //    margin-top: 200px;
+  //    background-color: #fff;
+  // }
+  // .el-scrollbar__view{
+  //   position: relative;
+  //   .el-menu{
+  //     position: absolute;
+  //     top: 200px;
+  //     margin-top: 200px !important;
+  //   }
+  // }
 }
 </style>

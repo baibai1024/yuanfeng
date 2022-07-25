@@ -54,3 +54,8 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.scrollbar-wrapper{
+  background-color: #fff !important;
+}
+</style>
