@@ -4,3 +4,9 @@ export function tododaban() {
     url: 'home/todo'
   })
 }
+export function sumList(dimension) {
+  return request({
+    url: 'home/sumList',
+    params: { dimension }
+  })
+}

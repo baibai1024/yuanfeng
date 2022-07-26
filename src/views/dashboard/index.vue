@@ -50,19 +50,44 @@
         <el-col v-for="(item,index) in tasklist" :key="index" :span="6"><div class="grid-content bg-purple"><p class="icon-b" :style="{background:item.color}"><i :class="item.icon" /></p><p style="font-size: 18px;">{{ item.name }}</p></div></el-col>
       </el-row>
     </div>
+    <div class="demo-storage">
+      <div class="echartsStorage"><span>入库/出库信息</span>
+        <el-button-group>
+          <el-button :class="{'bgc':bgcclass===1 ,btnA}" type="warning" plain @click="weekEcharts(1)">本周</el-button>
+          <el-button :class="{'bgc':bgcclass===2 ,btnA}" type="warning" plain @click="monthEcharts(2)">本月</el-button>
+          <el-button :class="{'bgc':bgcclass===3 ,btnA}" type="warning" plain @click="yearEcharts(3)">全年</el-button>
+        </el-button-group>
+      </div>
+      <echartsStorage v-if="bgcclass===1" :sumlists="sumLists" />
+      <echartsStorage v-else-if="bgcclass===2" :sumlists="sumLists" />
+      <echartsStorage v-else :sumlists="sumLists" />
+    </div>
+    <div class="demo-inventory">
+      <div class="demo-echartsLeft">
+        <div style="font-size: 16px; font-weight: bold; margin-bottom: 20px;">库存使用情况</div>1</div>
+      <div class="demo-echartsRight">
+        <div style="font-size: 16px; font-weight: bold; margin-bottom: 20px;">库区使用情况</div>2</div>
+    </div>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import { tododaban } from '@/api/dashboard'
+import { tododaban, sumList } from '@/api/dashboard'
+import echartsStorage from './echarts/Storage.vue'
 
 export default {
   name: 'Dashboard',
+  components: {
+    echartsStorage
+  },
   computed: {
     ...mapGetters([])
   },
   data() {
     return {
+
+      btnA: 'btnA',
+      bgcclass: 1,
       todolist: [],
       tasklist: [{
         name: '收货任务',
@@ -87,17 +112,43 @@ export default {
         icon: 'el-icon-s-custom'
       }
       ],
+      sumLists: {},
+      sumListsNumber: [],
       url: 'http://www-wms-java.itheima.net/img/dashboard-banner-left@2x.5afd2949.png'
     }
   },
   created() {
     this.tododaban()
+    this.weekEcharts(1)
+  },
+  mounted() {
+
   },
   methods: {
     async tododaban() {
       const res = await tododaban()
       console.log(res)
       this.todolist = res.data.data
+    },
+    async weekEcharts(i) {
+      this.bgcclass = i
+      const { data } = await sumList('w')
+
+      this.sumLists = data.data
+      this.sumListsNumber = data.data
+      console.log(this.sumLists)
+    },
+    async monthEcharts(i) {
+      this.bgcclass = i
+      const { data } = await sumList('e')
+      console.log(data)
+      this.sumLists = data.data
+    },
+    async yearEcharts(i) {
+      this.bgcclass = i
+      const { data } = await sumList('c')
+      console.log(data)
+      this.sumLists = data.data
     }
   }
 }
@@ -374,5 +425,56 @@ box-shadow: 0 0 5px #ccc;
     background-color: #f9fafc;
   }
     }
+.demo-storage{
+     margin-top: 20px;
+    height: 500px;
+    background: #fff;
+    box-shadow: 0 0 6px 0 rgb(144 142 142 / 17%);
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 20px;
+    .echartsStorage{
+      display:flex;
+      justify-content: space-between;
+      font-size: 16px;
+      font-weight: bold;
+        .btnA{
+      background-color: #fff;
+      border: 1px solid #ccc;
+      color: black;
+      &.btnA:hover{
+        color: #E6A23C;
+        border: 1px solid #ccc;
+
+      }
+
+    }
+    }
+    .bgc{
+      background-color: #E6A23C !important;
+      color:#fff !important;
+    }
+}
+.demo-inventory{
+  display: flex;
+  justify-content: space-between;
+  .demo-echartsLeft{
+    width: 30%;
+    height: 354px;
+    background: #fff;
+    box-shadow: 0 0 6px 0 rgb(144 142 142 / 17%);
+    border-radius: 12px;
+    padding: 25px;
+    margin-right: 30px;
+  }
+  .demo-echartsRight{
+    width: 70%;
+    height: 354px;
+    background: #fff;
+    box-shadow: 0 0 6px 0 rgb(144 142 142 / 17%);
+    border-radius: 12px;
+    padding: 25px;
+  }
+}
 
 </style>
