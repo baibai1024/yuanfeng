@@ -10,3 +10,16 @@ export function sumList(dimension) {
     params: { dimension }
   })
 }
+export function stockUseStatus() {
+  return request({
+    url: 'home/stockUseStatus'
+
+  })
+}
+export function areaUseStatus() {
+  return request({
+    url: 'home/areaUseStatus'
+
+  })
+}
+

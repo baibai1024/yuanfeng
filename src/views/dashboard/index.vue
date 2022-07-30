@@ -54,38 +54,46 @@
       <div class="echartsStorage"><span>入库/出库信息</span>
         <el-button-group>
           <el-button :class="{'bgc':bgcclass===1 ,btnA}" type="warning" plain @click="weekEcharts(1)">本周</el-button>
-          <el-button :class="{'bgc':bgcclass===2 ,btnA}" type="warning" plain @click="monthEcharts(2)">本月</el-button>
-          <el-button :class="{'bgc':bgcclass===3 ,btnA}" type="warning" plain @click="yearEcharts(3)">全年</el-button>
+          <el-button :class="{'bgc':bgcclass===2 ,btnA}" type="warning" plain @click="weekEcharts(2)">本月</el-button>
+          <el-button :class="{'bgc':bgcclass===3 ,btnA}" type="warning" plain @click="weekEcharts(3)">全年</el-button>
         </el-button-group>
       </div>
-      <echartsStorage v-if="bgcclass===1" :sumlists="sumLists" />
-      <echartsStorage v-else-if="bgcclass===2" :sumlists="sumLists" />
-      <echartsStorage v-else :sumlists="sumLists" />
+      <echartsStorage v-if="bgcclass===1" :id="id[0]" />
+      <echartsStorage v-else-if="bgcclass===2" :id="id[1]" />
+      <echartsStorage v-else :id="id[2]" />
     </div>
     <div class="demo-inventory">
       <div class="demo-echartsLeft">
-        <div style="font-size: 16px; font-weight: bold; margin-bottom: 20px;">库存使用情况</div>1</div>
+        <div style="font-size: 16px; font-weight: bold; margin-bottom: 20px;">库存使用情况</div>
+        <echartsLeft />
+      </div>
       <div class="demo-echartsRight">
-        <div style="font-size: 16px; font-weight: bold; margin-bottom: 20px;">库区使用情况</div>2</div>
+        <div style="font-size: 16px; font-weight: bold; margin-bottom: 20px;">库区使用情况</div>
+        <echartsRight />
+      </div>
     </div>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import { tododaban, sumList } from '@/api/dashboard'
+import { tododaban } from '@/api/dashboard'
 import echartsStorage from './echarts/Storage.vue'
+import echartsLeft from './echarts/piechartLeft.vue'
+import echartsRight from './echarts/piechartRight.vue'
 
 export default {
   name: 'Dashboard',
   components: {
-    echartsStorage
+    echartsStorage,
+    echartsLeft,
+    echartsRight
   },
   computed: {
     ...mapGetters([])
   },
   data() {
     return {
-
+      id: ['w', 'e', 'c'],
       btnA: 'btnA',
       bgcclass: 1,
       todolist: [],
@@ -112,14 +120,14 @@ export default {
         icon: 'el-icon-s-custom'
       }
       ],
-      sumLists: {},
+      // sumLists: {},
       sumListsNumber: [],
+
       url: 'http://www-wms-java.itheima.net/img/dashboard-banner-left@2x.5afd2949.png'
     }
   },
   created() {
     this.tododaban()
-    this.weekEcharts(1)
   },
   mounted() {
 
@@ -130,26 +138,29 @@ export default {
       console.log(res)
       this.todolist = res.data.data
     },
-    async weekEcharts(i) {
+    weekEcharts(i) {
       this.bgcclass = i
-      const { data } = await sumList('w')
-
-      this.sumLists = data.data
-      this.sumListsNumber = data.data
-      console.log(this.sumLists)
-    },
-    async monthEcharts(i) {
-      this.bgcclass = i
-      const { data } = await sumList('e')
-      console.log(data)
-      this.sumLists = data.data
-    },
-    async yearEcharts(i) {
-      this.bgcclass = i
-      const { data } = await sumList('c')
-      console.log(data)
-      this.sumLists = data.data
     }
+    // async weekEcharts(i) {
+    //   this.bgcclass = i
+    //   const { data } = await sumList('w')
+    //   this.sumLists = data.data
+
+    //   console.log(this.sumLists)
+    // },
+    // async monthEcharts(i) {
+    //   this.bgcclass = i
+    //   const { data } = await sumList('e')
+    //   console.log(data)
+    //   this.sumLists = data.data
+    // },
+    // async yearEcharts(i) {
+    //   this.bgcclass = i
+    //   const { data } = await sumList('c')
+    //   console.log(data)
+    //   this.sumLists = data.data
+    // },
+
   }
 }
 </script>

@@ -34,7 +34,8 @@ Vue.use(ElementUI, { locale })
 // Vue.use(ElementUI)
 
 Vue.config.productionTip = false
-
+var bus = new Vue()// 新创建一个实例，用以传值
+Vue.prototype.bus = bus// 挂载在vue的原型上
 new Vue({
   el: '#app',
   router,

@@ -2,28 +2,34 @@
   <div class="navbar">
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
-    <breadcrumb class="breadcrumb-container" />
+    <!-- <breadcrumb class="breadcrumb-container" /> -->
+    <el-tag
+      v-for="(item,index) in tag"
+      :key="item.name"
+      :class="{ color: color === index }"
+      class="tag"
+      :closable="item.name==='工作台'?false:true"
+      type="info"
+      @click="bb(item,index)"
+    >
+      {{ item.name }}
+    </el-tag>
 
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
-          <i class="el-icon-caret-bottom" />
+          <i class="el-icon-arrow-down" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <router-link to="/">
-            <el-dropdown-item>
-              Home
-            </el-dropdown-item>
-          </router-link>
-          <a target="_blank" href="https://github.com/PanJiaChen/vue-admin-template/">
-            <el-dropdown-item>Github</el-dropdown-item>
-          </a>
-          <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
-            <el-dropdown-item>Docs</el-dropdown-item>
-          </a>
-          <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">Log Out</span>
+
+          <el-dropdown-item>关闭左侧</el-dropdown-item>
+
+          <el-dropdown-item>关闭右侧</el-dropdown-item>
+
+          <el-dropdown-item>关闭其他</el-dropdown-item>
+
+          <el-dropdown-item divided>
+            <span style="display:block;">关闭全部</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -33,28 +39,76 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb'
+// import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 
 export default {
+  name: 'Navbar',
   components: {
-    Breadcrumb,
+    // Breadcrumb,
     Hamburger
   },
   computed: {
     ...mapGetters([
-      'sidebar',
-      'avatar'
+      'sidebar'
     ])
+  },
+  data() {
+    return {
+      color: 0,
+      tag: [
+        {
+          name: '工作台',
+          path: '/dashboard'
+        }
+
+      ]
+    }
+  },
+  watch: {
+    color: {
+      handler() {
+
+      }
+
+    }
+  },
+  created() {
+    this.bus.$on('sendTo', aa => {
+      console.log(this.tag.every(item => item.name !== aa.name))
+      if (this.tag.every(item => item.name !== aa.name)) {
+        this.tag.push(aa)
+        console.log(this.tag.findIndex(item => item === aa))
+      } else {
+        console.log(this.tag.findIndex(item => item === aa))
+      }
+      this.color = this.tag.findIndex(item => item === aa)
+      // this.color = this.tag.length - 1
+
+      // this.color = this.tag.indexOf(aa)
+
+      console.log(aa)
+      console.log(this.tag)
+    })
+  },
+  mounted() {
+    console.log(this.$router.options.routes)
   },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
-    async logout() {
-      await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    bb(e, index) {
+      this.color = index
+      // console.log(this.$router.options.routes)
+      console.log(this.a)
+      // this.tag = this.tag.filter(item => item.name !== e.name)
+      this.$router.push(e.path)
     }
+    // async logout() {
+    //   await this.$store.dispatch('user/logout')
+    //   this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    // }
   }
 }
 </script>
@@ -64,7 +118,7 @@ export default {
   height: 50px;
   overflow: hidden;
   position: relative;
-  background: #fff;
+  background: #f5f1f1;
   box-shadow: 0 1px 4px rgba(0,21,41,.08);
 
   .hamburger-container {
@@ -116,24 +170,28 @@ export default {
 
       .avatar-wrapper {
         margin-top: 5px;
-        position: relative;
+        border-radius: 6px;
+        width: 40px;
+        height: 40px;
+        background-color: #fff;
+        text-align: center;
 
-        .user-avatar {
+        .el-icon-arrow-down {
           cursor: pointer;
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
-        }
-
-        .el-icon-caret-bottom {
-          cursor: pointer;
-          position: absolute;
-          right: -20px;
-          top: 25px;
-          font-size: 12px;
+          font-size: 20px;
         }
       }
     }
   }
+  .tag{
+    margin-top: 6px;
+    margin-right: 5px;
+    //  color: rgb(255, 178, 0)
+
+  }
+  .color {
+   color: rgb(255, 178, 0)
+  }
+
 }
 </style>
