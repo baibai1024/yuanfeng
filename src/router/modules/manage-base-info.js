@@ -10,9 +10,14 @@ export default {
     {
       path: 'warehouse',
       name: '仓库管理',
-
       component: () => import('@/views/manage-base-info/warehouse/index.vue'),
       meta: { title: '仓库管理' }
+
+    },
+    {
+      path: 'warehouse/details',
+      name: '编辑仓库',
+      component: () => import('@/views/manage-base-info/warehouse/warehouseForm/index')
     },
     {
       path: 'area',

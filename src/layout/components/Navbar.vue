@@ -6,10 +6,11 @@
     <el-tag
       v-for="(item,index) in tag"
       :key="item.name"
-      :class="{ color: color === index }"
+      :class="{ color: color === index || falg===item.path}"
       class="tag"
       :closable="item.name==='工作台'?false:true"
       type="info"
+      @close="sotp(tag,index)"
       @click="bb(item,index)"
     >
       {{ item.name }}
@@ -22,14 +23,13 @@
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
 
-          <el-dropdown-item>关闭左侧</el-dropdown-item>
+          <el-dropdown-item icon="el-icon-back" @click.native="stopLeft">关闭左侧</el-dropdown-item>
 
-          <el-dropdown-item>关闭右侧</el-dropdown-item>
+          <el-dropdown-item icon="el-icon-right" @click.native="stopRight">关闭右侧</el-dropdown-item>
 
-          <el-dropdown-item>关闭其他</el-dropdown-item>
+          <el-dropdown-item icon="el-icon-close" @click.native="stopQi">关闭其他</el-dropdown-item>
 
-          <el-dropdown-item divided>
-            <span style="display:block;">关闭全部</span>
+          <el-dropdown-item icon="el-icon-error" @click.native="stopQuan">关闭全部
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -41,7 +41,6 @@
 import { mapGetters } from 'vuex'
 // import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-
 export default {
   name: 'Navbar',
   components: {
@@ -55,44 +54,28 @@ export default {
   },
   data() {
     return {
+      falg: '',
       color: 0,
       tag: [
         {
           name: '工作台',
           path: '/dashboard'
         }
-
       ]
-    }
-  },
-  watch: {
-    color: {
-      handler() {
-
-      }
-
     }
   },
   created() {
     this.bus.$on('sendTo', aa => {
+      this.color = null
+      this.falg = aa.path
       console.log(this.tag.every(item => item.name !== aa.name))
       if (this.tag.every(item => item.name !== aa.name)) {
         this.tag.push(aa)
-        console.log(this.tag.findIndex(item => item === aa))
-      } else {
-        console.log(this.tag.findIndex(item => item === aa))
       }
-      this.color = this.tag.findIndex(item => item === aa)
-      // this.color = this.tag.length - 1
-
-      // this.color = this.tag.indexOf(aa)
-
-      console.log(aa)
-      console.log(this.tag)
     })
   },
   mounted() {
-    console.log(this.$router.options.routes)
+    // console.log(this.$router.options.routes)
   },
   methods: {
     toggleSideBar() {
@@ -100,11 +83,38 @@ export default {
     },
     bb(e, index) {
       this.color = index
-      // console.log(this.$router.options.routes)
-      console.log(this.a)
-      // this.tag = this.tag.filter(item => item.name !== e.name)
       this.$router.push(e.path)
+    },
+    sotp(tag, index) {
+      this.tag.splice(index, 1)
+      console.log(this.tag.findIndex(item => item.path === this.falg))
+      if (this.tag.findIndex(item => item.path === this.falg) !== index) {
+        this.color = index - 1
+        this.$router.push(this.tag[index - 1].path)
+      }
+    },
+    stopLeft() {
+      const index = this.tag.findIndex(item => item.path === this.falg)
+
+      this.tag = this.tag.filter((item, ind) => index <= ind || ind === 0)
+    },
+    stopRight() {
+      const index = this.tag.findIndex(item => item.path === this.falg)
+
+      this.tag = this.tag.filter((item, ind) => index >= ind)
+    },
+    stopQi() {
+      const index = this.tag.findIndex(item => item.path === this.falg)
+
+      this.tag = this.tag.filter((item, ind) => index === ind || ind === 0)
+    },
+    stopQuan() {
+      if (this.tag.length > 1) {
+        this.$router.push(this.tag[0].path)
+        this.tag = this.tag.filter((item, ind) => ind === 0)
+      }
     }
+
     // async logout() {
     //   await this.$store.dispatch('user/logout')
     //   this.$router.push(`/login?redirect=${this.$route.fullPath}`)

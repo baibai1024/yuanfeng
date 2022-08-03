@@ -38,9 +38,10 @@ export default {
   components: { SidebarItem, Logo },
   data() {
     return {
-      aa: {},
-      cc: 0
+      aa: {}
     }
+  },
+  created() {
   },
   computed: {
     ...mapGetters([
@@ -49,11 +50,7 @@ export default {
     routes() {
       return this.$router.options.routes
     },
-
     activeMenu(e) {
-      this.bus.$on('send', index => {
-        this.cc = index
-      })
       console.log(e)
       const route = this.$route
       console.log(route)
@@ -61,16 +58,18 @@ export default {
       const aa = {}
       aa.name = route.name
       aa.path = route.path
-
-      // const ee = dd.filter(item => item.name === aa.name)
-      // console.log(ee)
-      this.bus.$emit('sendTo', aa)// 注册事件，传值
+      console.log(aa)
+      this.$nextTick(() => {
+        this.bus.$emit('sendTo', aa)
+      })
+      // 注册事件，传值
       // if set path, the sidebar will highlight the path you set
       if (meta.activeMenu) {
         return meta.activeMenu
       }
       return path
     },
+
     showLogo() {
       return this.$store.state.settings.sidebarLogo
     },
@@ -81,10 +80,10 @@ export default {
       return !this.sidebar.opened
     }
   },
-  created() {
-
+  mounted() {
+  },
+  methods: {
   }
-
 }
 </script>
 <style lang="scss" scoped>
@@ -107,7 +106,6 @@ export default {
     img{
       width: 40px;
       height: 40px;
-
     }
     .title{
      padding-right: 20px;
