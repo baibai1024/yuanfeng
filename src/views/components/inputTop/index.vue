@@ -2,7 +2,7 @@
   <div class="inpntTop">
     <el-row :gutter="20" type="flex">
       <el-col :span="6" type="flex"><div class="grid-content bg-purple">
-        <p class="span-a">仓库编号</p>
+        <p class="span-a">{{ inputList[0] }}</p>
         <el-input
           v-model="input1"
           :maxlength="10"
@@ -12,7 +12,7 @@
       </div>
       </el-col>
       <el-col :span="6"><div class="grid-content bg-purple">
-        <p class="span-a">库区名称</p>
+        <p class="span-a">{{ inputList[1] }}</p>
         <el-input
           v-model="input2"
           :maxlength="10"
@@ -21,7 +21,7 @@
         />
       </div></el-col>
       <el-col :span="6"><div class="grid-content bg-purple">
-        <p class="span-a">仓库状态</p>
+        <p class="span-a">{{ inputList[2] }}</p>
         <el-input
           v-if="falg"
           v-model="input3"
@@ -54,6 +54,10 @@ export default {
   props: {
     falg: {
       type: Boolean,
+      required: true
+    },
+    inputList: {
+      type: Array,
       required: true
     }
   },

@@ -15,7 +15,7 @@ export default {
 
     },
     {
-      path: 'warehouse/details',
+      path: 'warehouse/details/:id',
       name: '编辑仓库',
       component: () => import('@/views/manage-base-info/warehouse/warehouseForm/index')
     },

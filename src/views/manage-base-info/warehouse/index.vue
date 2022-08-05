@@ -1,7 +1,7 @@
 <template>
   <div class="demo-Warehouse">
     <div class="demo-top">
-      <inputTop :falg="falg" @getBtn="getBtn" @getinput="getinput" />
+      <inputTop :input-list="inputList" :falg="falg" @getBtn="getBtn" @getinput="getinput" />
     </div>
     <div class="demo-bottom">
       <el-card v-loading="loading" style="border-radius: 12px;">
@@ -45,6 +45,7 @@ export default {
   },
   data() {
     return {
+      inputList: ['仓库编号', '仓库名称', '仓库状态'],
       val: {},
       dialogVisible: false,
       falg: false,
@@ -145,11 +146,11 @@ export default {
       })
     },
     async newAdded() {
-      this.$router.push({ path: 'warehouse/details', query: { null: null }})
+      this.$router.push(`warehouse/details/${null}`)
     },
     bianji(e) {
       console.log(e)
-      this.$router.push({ path: 'warehouse/details', query: { id: e.id }})
+      this.$router.push(`warehouse/details/${e.id}`)
     }
 
   }

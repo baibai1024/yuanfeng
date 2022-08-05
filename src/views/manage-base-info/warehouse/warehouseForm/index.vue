@@ -33,6 +33,7 @@
                 size="large"
                 :options="options"
                 :props="{ expandTrigger: 'hover' }"
+                @change="chengshi"
               />
             </el-form-item>
           </el-col>
@@ -96,13 +97,16 @@ export default {
       selectedOptions: [],
       value: '',
       formdata: {
+        province: '',
+        city: '',
+        area: '',
         code: '',
         name: '',
         type: '',
         location: '',
         address: '',
         status: 1,
-        surface: 0,
+        surface: '',
         personName: '',
         phone: ''
       },
@@ -129,11 +133,17 @@ export default {
   mounted() {
   },
   methods: {
+    chengshi(e) {
+      this.formdata.province = e[0]
+      this.formdata.city = e[1]
+      this.formdata.area = e[2]
+    },
     async fromlist() {
       this.loading = true
-      console.log(this.$route.query.id)
-      if (this.$route.query.id) {
-        const { data } = await warehouse(this.$route.query)
+
+      if (this.$route.params.id !== 'null') {
+        const { data } = await warehouse(this.$route.params)
+
         data.data.records[0].status = Number(data.data.records[0].status)
         this.formdata = data.data.records[0]
         const a = this.formdata.location.split('/')
@@ -156,7 +166,7 @@ export default {
           CodeToText[this.formdata.location[2]]
         }`
         console.log(this.formdata)
-        if (this.$route.query.id) {
+        if (this.$route.params.id !== 'null') {
           console.log(this.formdata)
           await warehouseput(this.formdata)
         } else {
@@ -290,7 +300,7 @@ $mainColor: #feb202;
     ::v-deep .el-input__inner {
       border-radius: 8px 0 0 8px !important;
     }
-    ::v-deep.el-input__suffix {
+    ::v-deep .el-input__suffix {
       right: 0;
       width: 40px;
       color: #999;
