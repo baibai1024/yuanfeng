@@ -18,7 +18,6 @@
         <el-table-column
           v-for="(value, key) in headers"
           :key="value.key"
-
           :label="key"
           width="180"
         >
